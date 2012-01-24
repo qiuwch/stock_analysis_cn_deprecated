@@ -1,14 +1,41 @@
 # -*- coding: utf-8 -*-
 
 import BeautifulSoup
-import Company
+from entity import Company, classKey
 
 class ShenzhenFieldLoader():
-    def loadVal(self, dataRow):
-        c = Company.loadFromXml(dataRow)
+    def loadFromXmlRow(self, xmlRow):
+        c = Company()
+        dataVal = xmlRow.findAll('td')
+        for i in xrange(len(dataVal)):
+            if i < len(classKey) and classKey[i] != '':
+                c.__dict__[classKey[i]] = dataVal[i].text
         return c
 
     def load(self):
+        return self.loadFromPlainTxt()
+        # self.loadFromXmlFile()
+
+    def loadFromPlainTxt(self):
+        txtFile = open('sjCompanyData.txt')
+        fieldLine = txtFile.readline()
+        fieldCnVals = fieldLine.split(':')
+        
+        dataLine = txtFile.readline()
+        companys = {}
+        while dataLine:
+            c = Company()
+            dataVals = dataLine.split(':')
+            for i in xrange(len(dataVals)):
+                c.__dict__[classKey[i]] = dataVals[i]
+            dataLine = txtFile.readline()
+            c.ticker = c.code + '.SZ'
+            companys[c.ticker] = c
+        txtFile.close()
+        return companys
+        
+
+    def loadFromXmlFile(self):
         '''
         从xls载入数据
         仅有股票信息，无具体交易信息
@@ -17,11 +44,11 @@ class ShenzhenFieldLoader():
         soup = BeautifulSoup.BeautifulSoup(f)
         titleRow = soup.find('tr', {'class':'cls-data-tr-head'})
         dataRows = soup.findAll('tr',{'class':'cls-data-tr'})
-        companys = []
+        companys = {}
         fields = self.loadField(titleRow)
         for i in dataRows:
-            c = self.loadVal(i)
-            companys.append(c)
+            c = self.loadFromXmlRow(i)
+            companys[c.code] = c
         return companys
 
 

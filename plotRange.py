@@ -2,6 +2,7 @@ from pylab import *
 import dj
 import dist
 import pdb
+from DowJonesDataLoader import DowJonesDataLoader
 
 def testPlot():
     plot(1,1)
@@ -18,7 +19,7 @@ def plotCompany(c, y=None, start = datetime.datetime(1988, 4, 1), end = datetime
     title(c.ticker)
     start = datetime.datetime(1988, 4, 1)
     end = datetime.datetime(1998, 5, 1)
-    x = c.date(start, end)
+    x = c.GetDate(start, end)
     px = range(len(x))
     # px = x
 
@@ -29,10 +30,16 @@ def plotCompany(c, y=None, start = datetime.datetime(1988, 4, 1), end = datetime
 def plotCompanys(companys):
     for c in companys.values(): plotCompany(c)
 
-def test(companys):
+def testPlot(companys):
     c = companys['msft']
     start = datetime.datetime(1988, 4, 1)
     end = datetime.datetime(1998, 5, 1)
-    y = dist.delta(dist.diff(c.high(start, end)))
-    y.append(0) # to make the dimension match
-    plotCompany(c, y, start, end, '*')
+    # y = dist.delta(dist.diff(c.GetHigh(start, end)))
+    # y.append(0) # to make the dimension match
+    y = c.GetHigh(start, end)
+    # plotCompany(c, y, start, end, '*')
+    plotCompany(c, y, start, end)
+
+if __name__ == '__main__':
+    companys = DowJonesDataLoader.load()
+    testPlot(companys)
