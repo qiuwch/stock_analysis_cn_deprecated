@@ -102,10 +102,16 @@ class DayRecord:
     def __init__(self, date, openP, high, low, close, volume, adjclose):
         # self.date = parseDate(date)
         self.date = date
+        # self.open, high, close, low is left here for
+        # compatability issue
         self.open = float(openP)
+        self.openPrice = self.open
         self.high = float(high)
+        self.highPrice = self.high
         self.low = float(low)
+        self.lowPrice = self.low
         self.close = float(close)
+        self.closePrice = self.close
         self.volume = int(volume)
         self.adjclose = float(adjclose)
         

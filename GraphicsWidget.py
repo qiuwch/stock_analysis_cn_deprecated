@@ -7,13 +7,22 @@ from PyQt4 import QtGui, QtCore
 
 class GraphicsAxisItem(QtGui.QGraphicsItem):
     marginWidth = 30
-    def __init__(self, marker, xaxis=True, yaxis=True):
+    def __init__(self, marker=None, xaxis=True, yaxis=True):
         QtGui.QGraphicsItem.__init__(self)
-        self.marker = marker
+        if None == marker:
+            self.marker = [0]
+        else:
+            self.marker = marker
         self.xaxis = xaxis
         self.yaxis = yaxis
+        self.maxVal = max(self.marker)
+        self.minVal = min(self.marker)
+
+    def SetMarker(self, marker):
+        self.marker = marker
         self.maxVal = max(marker)
         self.minVal = min(marker)
+        self.update()
 
     def paint(self, painter, option, widget=None):
         # m = QtGui.QMatrix()
@@ -37,7 +46,8 @@ class GraphicsAxisItem(QtGui.QGraphicsItem):
         if self.xaxis:
             return QtCore.QRectF(self.minVal-GraphicsAxisItem.marginWidth, -marginWidth, self.maxVal+marginWidth, marginWidth*2 + 1)
         elif self.yaxis:
-            return QtCore.QRectF(-marginWidth, -self.minVal, marginWidth*2 + 1, -(self.maxVal+marginWidth))
+            # return QtCore.QRectF(-marginWidth, -self.minVal, marginWidth*2 + 1, -(self.maxVal+marginWidth))
+            return QtCore.QRectF(-marginWidth, -(self.maxVal + marginWidth), marginWidth*2 + 1, self.maxVal - self.minVal + 2*marginWidth)
         else:
             return QtCore.QRectF(min(-marginWidth, self.minVal),\
                                  min(-marginWidth, self.minVal),\
@@ -75,7 +85,7 @@ class GraphicsCompanyInfoItem(QtGui.QGraphicsItem):
 
 
 class GraphicsDayRecordItem(QtGui.QGraphicsItem):
-    paintWidth = 5
+    paintWidth = 10
     @classmethod
     def CreateFromRecord(cls, r):
         recordItem = GraphicsDayRecordItem(r.open, r.high, r.low, r.close, str(r.date))
@@ -127,6 +137,7 @@ class GraphicsDayRecordItem(QtGui.QGraphicsItem):
         return QtCore.QRectF(0, -self.highPrice, self.paintWidth, h)
 
     def hoverEnterEvent(self, event):
+        print 'Hover the item'
         if self.infoPanel != None:
             self.infoPanel.ShowInfo(self)
 
@@ -162,7 +173,6 @@ class GraphcisRecordInfoPanel(QtGui.QGraphicsItem):
 
 
     def ShowInfo(self, dayRecordItem):
-        print 'Hover the item'
         self.openPrice =  dayRecordItem.openPrice / 100
         self.highPrice = dayRecordItem.highPrice / 100
         self.lowPrice = dayRecordItem.lowPrice / 100

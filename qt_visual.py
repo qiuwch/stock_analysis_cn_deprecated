@@ -4,8 +4,7 @@
 from PyQt4 import QtGui
 import sys
 from YahooDataLoader import YahooDataLoader
-from GraphicsWidget import GraphicsAxisItem, GraphicsDayRecordItem, GraphicsCompanyInfoItem, GraphcisRecordInfoPanel
-from GraphicsCompanyItem import GraphicsCompanyItem
+from GraphicsCompanyView import GraphicsCompanyView
 
 BIGNUM = 1000000
 
@@ -15,7 +14,9 @@ def loadCompanyData():
     companys = loader.loadFromPlainTxt()
     c = companys.values()[0]
     # c.PrintInfo()
-    YahooDataLoader.loadCompanyHistory(c, '20110101', '20120101')
+    # YahooDataLoader.loadCompanyHistoryFromInternet(c, '20110101', '20120101')
+    print c.ticker
+    YahooDataLoader.loadCompanyHistoryFromLocalCache(c, 2011, 2012)
     # c.PrintInfo()
     return c
 
