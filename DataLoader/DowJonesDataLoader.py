@@ -2,7 +2,7 @@ from entity import DayRecord, Company
 class DowJonesDataLoader():
     @classmethod
     def load(cls):
-        f = open('DJ30_1985_2003.txt')
+        f = open('data/DJ30_1985_2003.txt')
         companys = {}
         recordCount = 0
         line = f.readline()

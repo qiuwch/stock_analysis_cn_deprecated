@@ -17,7 +17,7 @@ class ShenzhenFieldLoader():
         # self.loadFromXmlFile()
 
     def loadFromPlainTxt(self):
-        txtFile = open('sjCompanyData.txt')
+        txtFile = open('data/sjCompanyData.txt')
         fieldLine = txtFile.readline()
         fieldCnVals = fieldLine.split(':')
         

@@ -1,8 +1,11 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
+'''
+Load all company infos from ShenZhen data.
+'''
 
 import pickle
-import ShenzhenFieldLoader
+import DataLoader.ShenzhenFieldLoader
 
 
 def findMaxRemain(companys):
@@ -27,8 +30,9 @@ def findMax(companys, func):
     companys[maxI].printInfo()
 
 if __name__ == '__main__':
-    loader = ShenzhenFieldLoader.ShenzhenFieldLoader()
+    loader = DataLoader.ShenzhenFieldLoader.ShenzhenFieldLoader()
     companys = loader.load()
+    print companys
 
 
 

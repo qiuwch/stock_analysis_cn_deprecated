@@ -7,7 +7,7 @@ companyList = os.listdir(pathName)
 print 'Downloaded companys %d' % len(companyList)
 # print companyList
 
-f = open('rebuildSzList.txt', 'w')
+f = open('data/rebuildSzList.txt', 'w')
 
 fieldLine = 'ticker,startYear,years\n'
 f.writelines(fieldLine)

@@ -1,7 +1,10 @@
 #!/usr/bin/python
+'''
+MainWindow from stock price visualization.
+'''
 from PyQt4 import QtGui, QtCore
-from GraphicsCompanyView import GraphicsCompanyView
-from GraphicsCompanyList import GraphicsCompanyList, CompanyListSource
+from QtGui.GraphicsCompanyView import GraphicsCompanyView
+from QtGui.GraphicsCompanyList import GraphicsCompanyList, CompanyListSource
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, *args):
@@ -55,7 +58,7 @@ class MainWindow(QtGui.QMainWindow):
         menuLayout.addWidget(btn2)
 
     def loadComapnyListData(self):
-        from ShenzhenFieldLoader import ShenzhenFieldLoader
+        from DataLoader.ShenzhenFieldLoader import ShenzhenFieldLoader
         loader = ShenzhenFieldLoader()
         self.companys = loader.loadFromPlainTxt()
 
