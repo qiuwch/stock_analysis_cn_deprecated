@@ -81,7 +81,8 @@ class PlainTextExporter():
         import ystockquote
         import sys
 
-        pathName = c.ticker
+        suffix = c.ticker.split('.')[1]
+        pathName = '%s/%s' % (suffix, c.ticker)
         if not os.access(pathName, os.F_OK):
             os.mkdir(pathName)
 

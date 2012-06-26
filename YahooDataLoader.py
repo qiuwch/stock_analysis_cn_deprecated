@@ -29,7 +29,8 @@ class YahooDataLoader():
     @classmethod
     def loadCompanyHistoryFromLocalCache(cls, c, start_year, end_year):
         for year in range(start_year, end_year):
-            f = open('%s/%s.txt' % (c.ticker, year), 'r')
+            suffix = c.ticker.split('.')[1]
+            f = open('%s/%s/%s.txt' % (suffix, c.ticker, year), 'r')
             fieldLine = f.readline().strip('\r\n')
             fields = fieldLine.split(',')
             dataLine = f.readline().strip('\r\n')

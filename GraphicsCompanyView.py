@@ -6,10 +6,19 @@ from GraphicsWidget import GraphicsAxisItem, GraphicsDayRecordItem, GraphicsComp
 BIGNUM = 1000000
 
 class GraphicsCompanyTimeSeries(QtGui.QGraphicsItemGroup):
+    def SetLineColor(self, color):
+        self.lineColor = color
+
+    def SetKVisible(self, visible):
+        pass
+        
     def __init__(self, c, recordInfoPanel=None):
         QtGui.QGraphicsItemGroup.__init__(self)
 
+        # set up internal data structure
+        self.lineColor = None
         self.company = c
+        
         self.setHandlesChildEvents(False)
         # self.setAcceptHoverEvents(True)
         if len(c.records) == 0:
@@ -27,6 +36,8 @@ class GraphicsCompanyTimeSeries(QtGui.QGraphicsItemGroup):
 
     def paint(self, painter, option, widget=None):
         QtGui.QGraphicsItemGroup.paint(self, painter, option, widget)
+        if self.company == None or len(self.company.records) == 0:
+            return
         x1 = GraphicsDayRecordItem.paintWidth / 2
         r = self.company.records[0]
         val1 = - (r.openPrice + r.closePrice) / 2 * 100
@@ -41,6 +52,14 @@ class GraphicsCompanyTimeSeries(QtGui.QGraphicsItemGroup):
 
 
 class GraphicsCompanyView(QtGui.QWidget):
+    def ZoomIn(self):
+        self.view.scale(1.1, 1.1)
+        print 'Zoom in'
+
+    def ZoomOut(self):
+        print 'Zoom out'
+        self.view.scale(0.9, 0.9)
+    
     def __init__(self):
         # internal data structure
         self.companyInfos = []
@@ -61,11 +80,15 @@ class GraphicsCompanyView(QtGui.QWidget):
         # build axis of company view
         self.xAxis = None
         self.yAxis = None
-        self.buildAxis()
+        # self.buildAxis()
 
         # build record info panel
         self.dayRecordInfoPanel = None
-        self.buildRecordInfoPanel()
+        # self.buildRecordInfoPanel()
+
+    def wheelEvent(self, event):
+        QtGui.QWidget.wheelEvent(self, event)
+        # print event.delta()
 
     def buildAxis(self):
         # add axis to scene
@@ -76,7 +99,15 @@ class GraphicsCompanyView(QtGui.QWidget):
         self.scene.addItem(self.yAxis)
 
     def updateAxis(self):
-        # update axis
+        # update yAxisValue
+        self.yAxisMaxPrice = 0
+        self.yAxisMinPrice = BIGNUM
+        
+        for companyInfo in self.companyInfos:
+            [c, maxPrice, minPrice] = companyInfo
+            self.yAxisMaxPrice = max(maxPrice, self.yAxisMaxPrice)
+            self.yAxisMinPrice = min(minPrice, self.yAxisMinPrice)
+        self.xAxisN = len(c.records)
 
         xWidth = GraphicsDayRecordItem.paintWidth * self.xAxisN
         xMarker = [i for i in range(0, xWidth, 100)]
@@ -93,44 +124,43 @@ class GraphicsCompanyView(QtGui.QWidget):
         yMarker.append(yAxisMax)        
         self.yAxis.SetMarker(yMarker)
 
-        # print xMarker
-        # print yMarker
-
-    def Update(self):
+    def UpdateView(self):
+        self.scene.clear()
+        
+        self.buildAxis()
         self.updateAxis()
-
+        
+        self.buildRecordInfoPanel()
+        
         for companyInfo in self.companyInfos:
             [c, maxPrice, minPrice] = companyInfo
             self.buildCompanyInfoItem(c)
             companyTimeSeries = GraphicsCompanyTimeSeries(c, self.dayRecordInfoPanel)
             self.scene.addItem(companyTimeSeries)
             # c.PrintInfo()
-    
+
+    def SetSource(self, companyList):
+        self.companyInfos = []
+        for c in companyList:
+            self.appendCompany(c)
+        self.UpdateView()
+
     def AddCompany(self, c):
+        self.appendCompany(c)
+        self.UpdateView()
+
+    def appendCompany(self, c):
         companyMaxPrice = 0
         companyMinPrice = BIGNUM
         for record in c.records:
             companyMaxPrice = max(companyMaxPrice, record.highPrice)
             companyMinPrice = min(companyMinPrice, record.lowPrice)
         self.companyInfos.append([c, companyMaxPrice, companyMinPrice])
-        # print self.companyInfos
-
-        # update yAxisValue
-        self.yAxisMaxPrice = 0
-        self.yAxisMinPrice = BIGNUM
-        
-        for companyInfo in self.companyInfos:
-            [c, maxPrice, minPrice] = companyInfo
-            self.yAxisMaxPrice = max(maxPrice, self.yAxisMaxPrice)
-            self.yAxisMinPrice = min(minPrice, self.yAxisMinPrice)
-
-        self.xAxisN = len(c.records)
 
     def buildCompanyInfoItem(self, c):
         companyInfoItem = GraphicsCompanyInfoItem(c)
         companyInfoItem.setPos(0, 30)
         self.scene.addItem(companyInfoItem)
-
 
     def buildRecordInfoPanel(self):
         # set up dayRecordInfoPanel
