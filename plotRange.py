@@ -1,8 +1,7 @@
 from pylab import *
-import dj
 import dist
 import pdb
-from DowJonesDataLoader import DowJonesDataLoader
+from DataLoader.DowJonesDataLoader import DowJonesDataLoader
 
 def testPlot():
     plot(1,1)

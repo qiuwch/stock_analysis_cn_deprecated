@@ -1,6 +1,10 @@
 #!/usr/bin/python
 #-*-  coding: utf-8 -*-
+'''
+Crawl stock data of ShenZhen stock market.
+'''
 
+SHENZHEN_LIST = 'data/szList.txt'
 class HistoryDownloadParm():
     maxYear = 2013
     def __init__(self):
@@ -25,8 +29,8 @@ class PlainTextExporter():
         import os
         # process exsiting data
         finishedData = {}
-        if os.access('szList.txt', os.F_OK):
-            fCompanyList = open('szList.txt', 'r')
+        if os.access(SHENZHEN_LIST, os.F_OK):
+            fCompanyList = open(SHENZHEN_LIST, 'r')
             line = fCompanyList.readline().strip('\r\n')
             # this line is field line
             print 'Content of szList.txt'
@@ -43,7 +47,7 @@ class PlainTextExporter():
             fCompanyList.close()
         
         # download new data
-        fCompanyList = open('szList.txt', 'w+')
+        fCompanyList = open(SHENZHEN_LIST, 'w+')
         fieldLine = 'ticker,startYear,years\n'
         fCompanyList.writelines(fieldLine)
         count = 0
@@ -124,7 +128,7 @@ class PlainTextExporter():
 
 
 if __name__ == '__main__':
-    from ShenzhenFieldLoader import ShenzhenFieldLoader
+    from DataLoader.ShenzhenFieldLoader import ShenzhenFieldLoader
     loader = ShenzhenFieldLoader()
     companys = loader.loadFromPlainTxt()
     # companys = companys.values()[0:2]
