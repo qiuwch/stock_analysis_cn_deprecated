@@ -7,15 +7,15 @@ class YahooDataLoader():
         pass
 
     @classmethod
-    def load(cls, ticker):
+    def Load(cls, ticker):
         return ystockquote.get_price(ticker)
 
     @classmethod
-    def loadHistory(cls, ticker, start_date, end_date):
+    def LoadHistory(cls, ticker, start_date, end_date):
         return ystockquote.get_historical_prices(ticker, start_date, end_date)
 
     @classmethod
-    def loadCompanyHistoryFromInternet(cls, c, start_date, end_date):
+    def LoadCompanyHistoryFromInternet(cls, c, start_date, end_date):
         lines = ystockquote.get_historical_prices(c.ticker, start_date, end_date)
         fieldLine = lines[0]
         print fieldLine
@@ -27,7 +27,7 @@ class YahooDataLoader():
         return lines
 
     @classmethod
-    def loadCompanyHistoryFromLocalCache(cls, c, start_year, end_year):
+    def LoadCompanyHistoryFromLocalCache(cls, c, start_year, end_year):
         for year in range(start_year, end_year):
             suffix = c.ticker.split('.')[1]
             f = open('%s/%s/%s.txt' % (suffix, c.ticker, year), 'r')

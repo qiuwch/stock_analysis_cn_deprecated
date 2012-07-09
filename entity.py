@@ -34,9 +34,11 @@ class Company:
         self.ticker = ticker
         self.fullName = ''
         self.records = []
+        self.prices = {}
 
     def Append(self, dayRecord):
         self.records.insert(0, dayRecord)
+        self.prices[dayRecord.date] = dayRecord
 
     def GetProperty(self, propMap, startDate=None, endDate=None):
         '''
