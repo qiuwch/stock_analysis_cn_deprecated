@@ -1,4 +1,5 @@
 class Simulator:
+	k_linebreak = '--------------------------------'
 	def __init__(self, market):
 		# stocksource 
 		self.market = market
@@ -13,6 +14,7 @@ class Simulator:
 			user.strategy.SetContext(self.market, user)
 
 	def Tick(self):
+		print Simulator.k_linebreak
 		weekday = self.date.isoweekday()
 		if weekday == 6 or weekday == 7:
 			print 'Simulator:Skip weekends'

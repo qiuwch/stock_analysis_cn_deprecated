@@ -30,5 +30,11 @@ class Market:
 			print 'Market:Can not find this stockname.'
 			return None
 
-		return price_source.GetPrice(self.date)
+		# current return high price
+		# print dir(price_source.GetPrice(self.date))
+		if price_source.GetPrice(self.date) == None:
+			print 'Market:No trading data for ', self.date
+			return None
+		else:
+			return price_source.GetPrice(self.date).high
 

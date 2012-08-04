@@ -8,7 +8,7 @@ from PriceSource import PriceSource
 
 strategy = SimpleStrategy()
 
-name = 'qiuwch'
+name = 'Weichao Qiu'
 initial_money = 10000
 user = User(name, initial_money, strategy)
 

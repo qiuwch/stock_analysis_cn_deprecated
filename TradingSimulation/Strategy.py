@@ -11,8 +11,14 @@ class SimpleStrategy:
 		market = self.market
 
 		stockname = '000001.SZ'
-		volume = user.money / market.GetPrice(stockname)
-		self.user.Buy(stockname, volume)
+		# print market.GetPrice(stockname)
+		stockprice = market.GetPrice(stockname)
+		if stockprice != None:
+			volume = user.money / stockprice
+			if volume != 0: self.user.Buy(stockname, volume)
+		else:
+			return
+		
 
 		'''
 		volume = (user.money / 2) / market.GetPrice('GOOG')

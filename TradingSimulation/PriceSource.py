@@ -8,8 +8,8 @@ class PriceSource:
 
 	def GetPrice(self, date):
 		date_key = date.strftime('20%y-%m-%d') # TODO: fix this buggy code.
-		print date_key
-		print self.source.prices
+		# print date_key
+		# print self.source.prices
 		return self.source.prices.get(date_key)
 
 if __name__ == '__main__':
