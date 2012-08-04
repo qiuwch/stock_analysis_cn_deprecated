@@ -1,0 +1,2 @@
+Date,Open,High,Low,Close,Volume,Adj Clos
+2010-05-05,41.73,43.66,41.11,43.60,1618100,43.6

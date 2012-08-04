@@ -1,4 +1,4 @@
 *~
-*.SZ
+# *.SZ
 *.pyc
 wxPython
