@@ -1,4 +1,4 @@
-#!/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 '''
 Load all company infos from ShenZhen data.
