@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
 import BeautifulSoup
-from entity import Company, classKey
+
+from Config import *
+from StockCore.entity import Company, classKey
 
 class ShenzhenFieldLoader():
     def LoadCompany(self, ticker):
+        # this deprecated function load data from online service
         companys = self.Load()
         c = companys.get(ticker)
         if len(c.records) == 0:
@@ -17,7 +20,7 @@ class ShenzhenFieldLoader():
         # self.loadFromXmlFile()
 
     def LoadFromPlainTxt(self):
-        txtFile = open('data/sjCompanyData.txt')
+        txtFile = open(SHENZHEN_COMPANY_INFO, 'r')
         fieldLine = txtFile.readline()
         fieldCnVals = fieldLine.split(':')
         

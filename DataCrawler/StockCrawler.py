@@ -4,7 +4,8 @@
 Crawl stock data of ShenZhen stock market.
 '''
 
-SHENZHEN_LIST = 'data/szList.txt'
+from Config import *
+
 class HistoryDownloadParm():
     maxYear = 2013
     def __init__(self):
@@ -33,7 +34,7 @@ class PlainTextExporter():
             fCompanyList = open(SHENZHEN_LIST, 'r')
             line = fCompanyList.readline().strip('\r\n')
             # this line is field line
-            print 'Content of szList.txt'
+            print 'Content of %s' % SHENZHEN_LIST
             line = fCompanyList.readline().strip('\r\n')
             # this is first line of data
             while line:
@@ -86,9 +87,9 @@ class PlainTextExporter():
         import sys
 
         suffix = c.ticker.split('.')[1]
-        pathName = '%s/%s' % (suffix, c.ticker)
-        if not os.access(pathName, os.F_OK):
-            os.mkdir(pathName)
+        stock_dir = DATA_DIR + '%s/%s' % (suffix, c.ticker)
+        if not os.access(stock_dir, os.F_OK):
+            os.mkdir(stock_dir)
 
         print 'Downloading %s , %s:' % (c.ticker, c.fullName),
         for year in range(parm.startYear, parm.endYear):
@@ -108,7 +109,7 @@ class PlainTextExporter():
                 print 'failed',
                 continue
 
-            f = open('%s/%s.txt' % (pathName, year), 'w')
+            f = open('%s/%s.txt' % (stock_dir, year), 'w')
 
             strFieldLine = ','.join(fieldLine)
             dataLines = lines[1:]
@@ -126,11 +127,10 @@ class PlainTextExporter():
             print 'done',
         print '...'
 
-
 if __name__ == '__main__':
-    from DataLoader.ShenzhenFieldLoader import ShenzhenFieldLoader
+    from ShenzhenFieldLoader import ShenzhenFieldLoader
     loader = ShenzhenFieldLoader()
-    companys = loader.loadFromPlainTxt()
+    companys = loader.LoadFromPlainTxt()
     # companys = companys.values()[0:2]
     companys = companys.values()
 

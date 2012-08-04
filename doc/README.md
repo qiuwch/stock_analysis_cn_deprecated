@@ -9,9 +9,11 @@ Struture of this system
 -----------------------
 This system is seperated into three main components.
 
-- Stock market data crawler
-- Visualize toolkit to show history data
-- Simulation system for strategy simulation
+1. Stock market data crawler
+2. Visualize toolkit to show history data
+3. Simulation system for strategy simulation
+
+This system should be completed in the order of 1 --> 3 --> 2
 
 To know the meaning of each file, take Filelist.md for reference.
 

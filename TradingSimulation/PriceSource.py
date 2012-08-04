@@ -4,7 +4,7 @@ class PriceSource:
 		from DataLoader.ShenzhenFieldLoader import ShenzhenFieldLoader
 		loader = ShenzhenFieldLoader()
 		self.ticker = ticker
-		self.source = loader.LoadCompany(ticker)
+		# self.source = loader.LoadCompany(ticker)  # this version load data from internet, not local cache
 
 	def GetPrice(self, date):
 		date_key = date.strftime('20%y-%m-%d') # TODO: fix this buggy code.

@@ -5,7 +5,7 @@ Load all company infos from ShenZhen data.
 '''
 
 import pickle
-import DataLoader.ShenzhenFieldLoader
+import ShenzhenFieldLoader
 
 
 def findMaxRemain(companys):
@@ -30,7 +30,7 @@ def findMax(companys, func):
     companys[maxI].printInfo()
 
 if __name__ == '__main__':
-    loader = DataLoader.ShenzhenFieldLoader.ShenzhenFieldLoader()
+    loader = ShenzhenFieldLoader.ShenzhenFieldLoader()
     companys = loader.Load()
     company = loader.LoadCompany('000001.SZ')
     price = [r.closePrice for r in company.records]
