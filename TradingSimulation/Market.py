@@ -9,18 +9,20 @@ class Market:
 		self.date = date
 		print 'Market date:', self.date
 
-	def UserAction(self):
-		for user in self.users:
-			user.Action()
-
 	def AddUser(self, user):
 		self.users.append(user)
 		user.market = self
 
+	def UserAction(self):
+		for user in self.users:
+			user.Action()
+
 	def AddPriceSource(self, price_source):
+		'''Price source for each stock'''
 		self.price_sources[price_source.ticker] = price_source
 
 	def GetPrice(self, stockname):
+		'''Return price of specific stock'''
 		if self.date == None:
 			print 'Market:Date is None.'
 			return None
@@ -37,4 +39,5 @@ class Market:
 			return None
 		else:
 			return price_source.GetPrice(self.date).high
+			# return price_source.GetPrice(self.date)
 

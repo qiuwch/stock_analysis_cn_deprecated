@@ -2,6 +2,8 @@
 '''
 MainWindow from stock price visualization.
 '''
+from Config import *
+from StockCore import StockDB
 from PyQt4 import QtGui, QtCore
 from QtGui.GraphicsCompanyView import GraphicsCompanyView
 from QtGui.GraphicsCompanyList import GraphicsCompanyList, CompanyListSource
@@ -13,7 +15,7 @@ class MainWindow(QtGui.QMainWindow):
         # internal data structure
         self.companys = None
         self.selectedCompany = None
-        self.loadComapnyListData()
+        self.loadCompanyListData()
         
         self.mainWidget = QtGui.QWidget(self)
         self.setCentralWidget(self.mainWidget)
@@ -57,19 +59,22 @@ class MainWindow(QtGui.QMainWindow):
         menuLayout.addWidget(btn1)
         menuLayout.addWidget(btn2)
 
-    def loadComapnyListData(self):
-        from DataLoader.ShenzhenFieldLoader import ShenzhenFieldLoader
+    def loadCompanyListData(self):
+        from DataCrawler.ShenzhenFieldLoader import ShenzhenFieldLoader
         loader = ShenzhenFieldLoader()
-        self.companys = loader.loadFromPlainTxt()
+        self.companys = loader.LoadFromPlainTxt()
 
     def SelectionChangedHandler(self, selectedWidgets):
         self.selectedCompany = []
         for widget in selectedWidgets:
-            c = widget.company
+            db = StockDB.ShenzhenStockDB()
+            c = db.GetStock(widget.company.ticker)
             self.selectedCompany.append(c)
-            if len(c.records) == 0:
-                from YahooDataLoader import YahooDataLoader
-                YahooDataLoader.loadCompanyHistoryFromLocalCache(c, 2011, 2012)
+
+            # self.selectedCompany.append(c)
+            # if len(c.records) == 0:
+            #     from YahooDataLoader import YahooDataLoader
+            #     YahooDataLoader.loadCompanyHistoryFromLocalCache(c, 2011, 2012)
         self.companyView.SetSource(self.selectedCompany)
         
     

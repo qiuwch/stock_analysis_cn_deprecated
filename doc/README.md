@@ -12,6 +12,7 @@ This system is seperated into three main components.
 1. Stock market data crawler
 2. Visualize toolkit to show history data
 3. Simulation system for strategy simulation
+4. Stock price provider, StockCore module
 
 This system should be completed in the order of 1 --> 3 --> 2
 

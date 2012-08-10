@@ -77,10 +77,11 @@ class Company:
                 chineseField = dataKey[classKey.index(classField)]
                 print chineseField,':',self.__dict__[classField]
 
-            elif classField == 'records':
+            elif classField == 'records' or classField == 'prices':
                 print classField,':','Length of records %d' % len(self.records)
             else:
                 print classField,':',self.__dict__[classField]
+        print dir(self)
 
     def GetAll(self):
         '''
