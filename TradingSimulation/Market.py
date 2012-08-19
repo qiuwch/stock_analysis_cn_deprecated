@@ -4,6 +4,7 @@ class Market:
 		self.price_sources = {}
 		self.count = 0
 		self.date = None
+		self.trading_fee = 0.1
 
 	def SetDate(self, date):
 		self.date = date

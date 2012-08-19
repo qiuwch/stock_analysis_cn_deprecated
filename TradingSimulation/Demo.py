@@ -5,6 +5,7 @@ from Market import Market
 from User import User
 from Gui import Gui
 from PriceSource import PriceSource
+import datetime
 
 strategy = SimpleStrategy()
 
@@ -20,6 +21,6 @@ market.AddUser(user)
 
 simulator = Simulator(market)
 # simulator.gui = Gui()
-import datetime
+
 simulator.start_date = datetime.datetime(2011, 1, 10)
 simulator.Simulate()  # Begin simulation

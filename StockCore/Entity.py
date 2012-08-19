@@ -3,6 +3,8 @@
 # dataKey = ['公司代码','公司简称','公司全称','英文名称','注册地址','A股代码','A股简称','A股上市日期','A股总股本','A股流通股本','B股代码','B股简称','B股上市日期','B股总股本','B股流通股本','地区','省份']
 # classKey = ['name','abbr','fullName','enName','addr','aCode','aAbbr','aDate']
 
+
+from Formatter import DateFormatter
 key=[
     ('公司代码','code'),
     ('公司简称','abbr'),
@@ -36,9 +38,15 @@ class Company:
         self.records = []
         self.prices = {}
 
-    def Append(self, dayRecord):
+    def Insert(self, dayRecord):
         self.records.insert(0, dayRecord)
-        self.prices[dayRecord.date] = dayRecord
+        date_key = DateFormatter.Format(dayRecord.date)
+        self.prices[date_key] = dayRecord
+
+    def Append(self, dayRecord):
+        self.records.append(dayRecord)
+        date_key = DateFormatter.Format(dayRecord.date)
+        self.prices[date_key] = dayRecord
 
     def GetProperty(self, propMap, startDate=None, endDate=None):
         '''
@@ -103,8 +111,8 @@ class DayRecord:
     Record for everyday transaction data.
     '''
     def __init__(self, date, openP, high, low, close, volume, adjclose):
-        # self.date = parseDate(date)
-        self.date = date
+        self.date = ParseDate(date)
+        # self.date = date
         # self.open, high, close, low is left here for
         # compatability issue
         self.open = float(openP)
@@ -118,8 +126,8 @@ class DayRecord:
         self.volume = int(volume)
         self.adjclose = float(adjclose)
         
-    def intDate(self):
-        return int(self.date.strftime('%Y%m%d'))
+    # def intDate(self):
+    #    return int(self.date.strftime('%Y%m%d'))
 
-def parseDate(formatStr):
-    return datetime.datetime.strptime(formatStr.strip('"'), '%d-%b-%y')
+def ParseDate(formatStr):
+    return datetime.datetime.strptime(formatStr.strip('"'), '%Y-%m-%d')

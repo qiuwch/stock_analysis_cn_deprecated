@@ -18,6 +18,9 @@ class GraphicsAxisItem(QtGui.QGraphicsItem):
         self.maxVal = max(self.marker)
         self.minVal = min(self.marker)
 
+    def SetXRange(self, start_date, end_date):
+        pass
+
     def SetMarker(self, marker):
         self.marker = marker
         self.maxVal = max(marker)
@@ -81,6 +84,7 @@ class GraphicsCompanyInfoItem(QtGui.QGraphicsItem):
 
 
     def boundingRect(self):
+        # print dir(self)
         return QtCore.QRectF(0, 0, self.w, self.h)
 
 
@@ -88,7 +92,8 @@ class GraphicsDayRecordItem(QtGui.QGraphicsItem):
     paintWidth = 10
     @classmethod
     def CreateFromRecord(cls, r):
-        recordItem = GraphicsDayRecordItem(r.open, r.high, r.low, r.close, str(r.date))
+        recordItem = GraphicsDayRecordItem(r.open, r.high, r.low, r.close, r.date)
+        recordItem.record = r
         return recordItem
 
     def __init__(self, openPrice, highPrice, lowPrice, closePrice, date):
@@ -100,7 +105,7 @@ class GraphicsDayRecordItem(QtGui.QGraphicsItem):
         self.lowPrice = lowPrice * 100
         self.closePrice = closePrice * 100
         self.date = date
-        self.infoPanel = None
+        self.info_panel = None
         # self.paintWidth = 10
 
     def paint(self, painter, option, widget=None):
@@ -133,34 +138,45 @@ class GraphicsDayRecordItem(QtGui.QGraphicsItem):
 
 
     def boundingRect(self):
+        '''
+        inhereted
+        Return bouding rect of this control (absolute coordinate of rectangle)
+        '''
         h = self.highPrice - self.lowPrice
         return QtCore.QRectF(0, -self.highPrice, self.paintWidth, h)
 
     def hoverEnterEvent(self, event):
-        print 'Hover the item'
-        if self.infoPanel != None:
-            self.infoPanel.ShowInfo(self)
+        '''
+        inhereted
+        Handle hover event
+        '''
+        # print 'Hover the item'
+        # print dir(event)
+        # print dir(event.lastScenePos())
+        mouse_pos = event.lastScenePos()
+        if self.info_panel != None:
+            self.info_panel.setPos(mouse_pos.x(), mouse_pos.y())
+            self.info_panel.ShowInfo(self)
 
 class GraphcisRecordInfoPanel(QtGui.QGraphicsItem):
     textHeight = 20
     def __init__(self):
         QtGui.QGraphicsItem.__init__(self)
-        self.openPrice = 0
-        self.highPrice = 0
-        self.lowPrice = 0
-        self.closePrice = 0
-        self.date = ''
+        self.record = None
         self.h = 60
         self.w = 300
 
     def paint(self, painter, option, widget=None):
+        if None == self.record:
+            return
+        import datetime
         textHeight = GraphicsCompanyInfoItem.textHeight
         fields = \
-               [['日期', self.date],
-                ['开盘价', self.openPrice],
-                ['收盘价', self.closePrice],
-                ['今日最低', self.lowPrice],
-                ['今日最高', self.highPrice]]
+               [['日期', self.record.date.strftime('%Y-%m-%d')],
+                ['开盘价', self.record.openPrice],
+                ['收盘价', self.record.closePrice],
+                ['今日最低', self.record.lowPrice],
+                ['今日最高', self.record.highPrice]]
         # draw bouding box
         self.h = len(fields) * textHeight + 10
         painter.drawRect(0, 0, self.w, self.h)
@@ -173,12 +189,8 @@ class GraphcisRecordInfoPanel(QtGui.QGraphicsItem):
 
 
     def ShowInfo(self, dayRecordItem):
-        self.openPrice =  dayRecordItem.openPrice / 100
-        self.highPrice = dayRecordItem.highPrice / 100
-        self.lowPrice = dayRecordItem.lowPrice / 100
-        self.closePrice =  dayRecordItem.closePrice / 100
-        self.date = dayRecordItem.date
-        self.update()
+        self.record = dayRecordItem.record
+        self.update() # make ui to refresh
 
     def boundingRect(self):
         return QtCore.QRectF(0, 0, self.w, self.h)

@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import datetime
 from Config import *
-from StockCore.StockDB import *
+from StockCore.Formatter import DateFormatter
+from StockCore.StockDB import ShenzhenStockDB
 
 class PriceSource:
 	def __init__(self, ticker):
@@ -13,13 +14,16 @@ class PriceSource:
 		# self.source = loader.LoadCompany(ticker)  # this version load data from internet, not local cache
 
 	def GetPrice(self, date):
-		date_key = date.strftime('20%y-%m-%d') # TODO: fix this buggy code.
+		date_key = DateFormatter.Format(date) # TODO: fix this buggy code.
 		# print date_key
 		# print self.source.prices
 		return self.source.prices.get(date_key)
 		# return 1
 
 if __name__ == '__main__':
+	'''
+	Unit test
+	'''
 	source = PriceSource('000001.SZ')
 	date = datetime.datetime(2011, 6, 1)
 	delta = datetime.timedelta(1)

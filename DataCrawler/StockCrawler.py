@@ -66,11 +66,11 @@ class PlainTextExporter():
             print 'Finished download', parm.finished
             print 'Failed download', parm.failed
 
-            companyField = [str(i) for i in parm.finished]
-            if len(companyField) == 0:
+            finished_year = [str(i) for i in parm.finished]
+            if len(finished_year) == 0:
                 companyField = [c.ticker, str(HistoryDownloadParm.maxYear)]
             else:
-                companyField = [c.ticker, companyField[0]] + companyField
+                companyField = [c.ticker, finished_year[0]] + finished_year
             # ticker, startYear, finishedYear
             companyLine = ','.join(companyField)
             # print companyLine
@@ -82,6 +82,9 @@ class PlainTextExporter():
         fCompanyList.close()
 
     def DownloadCompanyData(self, c, parm):
+        '''
+        Download company trading history of each stock
+        '''
         import os
         import ystockquote
         import sys
@@ -117,6 +120,7 @@ class PlainTextExporter():
             f.writelines(strFieldLine)
             f.writelines('\n')
 
+            dataLines.reverse()
             for dataLine in dataLines:
                 strDataLine = ','.join(dataLine)
                 f.writelines(strDataLine)

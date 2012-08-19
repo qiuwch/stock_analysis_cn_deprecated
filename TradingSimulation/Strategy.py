@@ -14,7 +14,7 @@ class SimpleStrategy:
 		# print market.GetPrice(stockname)
 		stockprice = market.GetPrice(stockname)
 		if stockprice != None:
-			volume = user.money / stockprice
+			volume = round(user.money / (stockprice * 100)) * 100
 			if volume != 0: self.user.Buy(stockname, volume)
 		else:
 			return
