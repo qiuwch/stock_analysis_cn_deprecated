@@ -17,8 +17,39 @@ class PriceSource:
 		date_key = DateFormatter.Format(date) # TODO: fix this buggy code.
 		# print date_key
 		# print self.source.prices
-		return self.source.prices.get(date_key)
-		# return 1
+		entry = self.source.prices.get(date_key)
+
+		if entry:
+			return entry.high
+		else:
+			return None
+
+	def GetHistoryPrice(self, start_date, end_date):
+		# TODO: this implementation is really slow, refactor
+		# start_date = self.source.min_date
+		date = start_date
+		delta = datetime.timedelta(1)
+		time_range = []
+
+		while date <= end_date:
+			time_range.append(date)
+			date = date + delta
+
+		prices = {}
+		for date in time_range:
+			date_key = DateFormatter.Format(date)
+			if None != self.GetPrice(date):
+				prices[date_key] = self.GetPrice(date)
+
+		print len(prices.keys())
+		return prices
+
+
+		 	
+
+
+
+
 
 if __name__ == '__main__':
 	'''

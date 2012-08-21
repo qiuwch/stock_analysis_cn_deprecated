@@ -89,7 +89,7 @@ class Company:
                 print classField,':','Length of records %d' % len(self.records)
             else:
                 print classField,':',self.__dict__[classField]
-        print dir(self)
+        # print dir(self)
 
     def GetAll(self):
         '''

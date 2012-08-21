@@ -18,28 +18,10 @@ class User:
 		self.market = None
 
 	def Buy(self, stockname, volume):
-		price = self.market.GetPrice(stockname)
-		print 'User:%s (%.2f) \t is trying to buy %s(%d) \t at price %.2f' % (self.name, self.money, stockname, volume, price)
-		if volume * price > self.money:
-			print 'Insufficient fund'
-			return False
-		else:
-			self.money = self.money - volume * price
-			if not self.stocks.has_key(stockname):
-				self.stocks[stockname] = volume
-			else:
-				self.stocks[stockname] = self.stocks[stockname] + volume
-			return True
-
+		self.market.Buy(self, stockname, volume)
 
 	def Sell(self, stockname, volume):
-		holdvolume = self.stocks.get(stockname)
-		if not holdvolume or holdvolume < volume:
-			print 'Insufficient stock to sell'
-		else:
-			price = self.market.GetPrice(stockname)
-			self.money = self.money + volume * price
-			print 'User:', self.name, ' is selling ', volume, 'at price ', price
+		self.market.Sell(self, stockname, volume)
 
 	def Action(self):
 		self.strategy.Action()

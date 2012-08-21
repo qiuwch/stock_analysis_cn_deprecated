@@ -17,7 +17,8 @@ class Simulator:
 		
 
 	def MainLoop(self):
-		ms_interval = 1000
+		# ms_interval = 10
+		ms_interval = 1
 		self.timer.start(ms_interval)
 		# Old implementation
 		# for i in range(100):
@@ -45,6 +46,8 @@ class Simulator:
 		delta = datetime.timedelta(1)
 		self.date = self.date + delta
 
+		if self.date > self.end_date:
+			self.timer.stop()
 
 	def SetupUI(self):
 		user = self.market.users[0]
@@ -65,6 +68,7 @@ class Simulator:
 	def Simulate(self):
 		if not self.start_date == None:
 			self.date = self.start_date
+			self.market.start_date = self.start_date
 		else:
 			print 'Simulator:Set start date first.'
 			return
@@ -73,7 +77,7 @@ class Simulator:
 		self.MainLoop()
 		for user in self.market.users:
 			user.PrintInfo()
-
+			print 'End of simulation'
 
 def test():
 	'''
@@ -95,16 +99,20 @@ def test():
 	initial_money = 10000
 	user = User(name, initial_money, strategy)
 
-	sz01 = PriceSource('000001.SZ')
+	# sz01 = PriceSource('000001.SZ')
 
 	market = Market()
-	market.AddPriceSource(sz01)
+	# market.AddPriceSource(sz01)  # Done by ctor of Market class
 	market.AddUser(user)
 
 	simulator = Simulator(market)
 	# simulator.gui = Gui()
 
 	simulator.start_date = datetime.datetime(2011, 1, 10)
+	simulator.end_date = datetime.datetime(2011, 3, 15)
+	# simulator.end_date = simulator.start_date + datetime.timedelta(180)
+	# simulate for 6 months
+	# simulator.end_date = datetime.datetime.now()
 	simulator.Simulate()  # Begin simulation
 
 	print 'end of simulation'

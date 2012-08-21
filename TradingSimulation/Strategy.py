@@ -1,4 +1,6 @@
-class SimpleStrategy:
+import math
+
+class GreedyStrategy:
 	def __init__(self):
 		pass
 
@@ -10,14 +12,40 @@ class SimpleStrategy:
 		user = self.user
 		market = self.market
 
+		stocknames = market.price_sources.keys()
+
+		print stocknames
+
+class SimpleStrategy:
+	def __init__(self):
+		pass
+
+	def SetContext(self, market, user):
+		# all public information of markdet and user
+		# should be observable to trading strategy
+
+		# history data can be available, but future data not available
+		self.market = market
+		self.user = user
+
+	def Action(self):
+		user = self.user
+		market = self.market
+
 		stockname = '000001.SZ'
 		# print market.GetPrice(stockname)
 		stockprice = market.GetPrice(stockname)
+		prices = market.GetHistoryPrice(stockname)
+
+		# Use all the money to buy
 		if stockprice != None:
-			volume = round(user.money / (stockprice * 100)) * 100
-			if volume != 0: self.user.Buy(stockname, volume)
+			volume = math.floor(user.money / (stockprice * 100)) * 100
+			if volume != 0: 
+				self.user.Buy(stockname, volume)
 		else:
 			return
+
+		# self.user.Sell(stockname, volume)
 		
 
 		'''
