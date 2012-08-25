@@ -16,6 +16,16 @@ class GreedyStrategy:
 
 		print stocknames
 
+		scores = [self.StockScore(stock_name) for stock_name in stocknames]
+		
+
+	def Choose(self):
+
+		pass
+
+	def StockScore(self, stockname):
+		return 0
+
 class SimpleStrategy:
 	def __init__(self):
 		pass
